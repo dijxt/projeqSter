@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.1",
     "cookie": "^0.6.0",
     "dotenv": "^16.4.1",
     "mysql": "^2.18.1",
