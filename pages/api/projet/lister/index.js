@@ -16,9 +16,9 @@ export default async function handler(req, res) {
     const cookies = parse(req.headers.cookie || '');
     const id_salarie = cookies.id_salarie;
 
-    if (!id_salarie) {
+   if (!id_salarie) {
       res.status(401).json({ status: 'error', message: 'Non autorisé' });
-      return;
+     return;
     }
 
     connection.query('SELECT * FROM PROJET WHERE chef_de_projet = ? OR id_projet IN (SELECT id_projet FROM AFFECTATION WHERE id_salarie = ?)', [id_salarie, id_salarie], (error, results) => {
