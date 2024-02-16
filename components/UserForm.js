@@ -1,6 +1,28 @@
+'use client';
+import {useRouter} from "next/router";
+
 export default function UserForm({type, link}) {
+  const router = useRouter();
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
+    const username = event.target.nom_salarie.value;
+    const password = event.target.mot_de_passe.value;
+
+    const response = await fetch(link, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nom_salarie: username, mot_de_passe: password })
+    });
+
+    if (response.ok) {
+      await router.push('/projects');
+    }
+    else {
+      alert("Veuillez réessayer")
+    }
+  };
 
   return (
       <>
@@ -13,7 +35,7 @@ export default function UserForm({type, link}) {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action={link} method="POST">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                   Nom d'utilisateur
@@ -25,7 +47,7 @@ export default function UserForm({type, link}) {
                       type="name"
                       autoComplete="name"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 pl-2"
                   />
                 </div>
               </div>
@@ -44,7 +66,7 @@ export default function UserForm({type, link}) {
                       type="password"
                       autoComplete="current-password"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-purple-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-purple-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 pl-2"
                   />
                 </div>
               </div>
