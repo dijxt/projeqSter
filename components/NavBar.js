@@ -24,7 +24,7 @@ const Navbar = ({host}) => {
                             <a href={host + "/projects"} className="text-white hover:text-gray-300">Mes projets</a>
                         </li>
                         <li>
-                            <a href={host + "/account"} className="text-white hover:text-gray-300">Mon compte</a>
+                            <a href={host + "/projects/new"} className="text-white hover:text-gray-300">Nouveau projet</a>
                         </li>
                     </ul>
                 </div>

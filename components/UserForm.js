@@ -1,8 +1,6 @@
 'use client';
-import {useRouter} from "next/router";
 
-export default function UserForm({type, link}) {
-  const router = useRouter();
+export default function UserForm({type, link, router}) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
