@@ -26,6 +26,10 @@ const Navbar = ({host}) => {
                         <li>
                             <a href={host + "/projects/new"} className="text-white hover:text-gray-300">Nouveau projet</a>
                         </li>
+
+                        <li>
+                            <a href={host + "/account/profile"} className="text-white hover:text-gray-300">Mon profil</a>
+                        </li>
                     </ul>
                 </div>
             </div>
