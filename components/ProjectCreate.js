@@ -25,6 +25,8 @@ const ProjectCreationPage = () => {
       description: projectDescription
     };
 
+    const router = useRouter();
+
     try {
       
       const response = await axios.post(process.env.NEXT_PUBLIC_API_HOST + '/api/projet/creer', projectData);
