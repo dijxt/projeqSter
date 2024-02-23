@@ -1,12 +1,14 @@
+// ProjectCreate.js
 'use client';
 import React, { useState } from 'react';
 import axios from 'axios';
-import dotenv from "dotenv";
+import Modal from 'react-modal';
+import {useRouter} from "next/navigation";
 
-dotenv.config();
-const ProjectCreationPage = () => {
+const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleProjectNameChange = (e) => {
     setProjectName(e.target.value);
@@ -19,7 +21,12 @@ const ProjectCreationPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
+    // Vérifier que le titre et la description ne sont pas vides
+    if (!projectName || !projectDescription) {
+      alert("Le titre et la description ne peuvent pas être vides.");
+      return;
+    }
+
     const projectData = {
       nom_projet: projectName,
       description: projectDescription
@@ -28,46 +35,79 @@ const ProjectCreationPage = () => {
     const router = useRouter();
 
     try {
-      
       const response = await axios.post(process.env.NEXT_PUBLIC_API_HOST + '/api/projet/creer', projectData);
-      
+
       if (response.data.status === 'ok') {
-        
-        console.log('Projet créé avec succès !');
-        
+        // Afficher un message de succès
+        setSuccessMessage('Projet créé avec succès !');
+        // Fermer le modal après un délai
+        setTimeout(() => {
+          router.refresh();
+          closeModal();
+
+        }, 3000);
       } else {
-        
         console.error('Erreur lors de la création du projet:', response.data.message);
       }
     } catch (error) {
-      
       console.error('Erreur lors de la requête:', error);
     }
   };
 
   return (
-    <div>
-      <h1>Création d'un projet</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="nom_projet">Nom du projet:</label>
-        <input
-          type="text"
-          id="nom_projet"
-          value={projectName}
-          onChange={handleProjectNameChange}
-        />
-
-        <label htmlFor="description">Description du projet:</label>
-        <textarea
-          id="description"
-          value={projectDescription}
-          onChange={handleProjectDescriptionChange}
-        ></textarea>
-
-        <input type="submit" value="Créer" />
-      </form>
-    </div>
+      <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="New Project"
+          style={{
+            content: {
+              width: '50%',
+              height: '50%',
+              margin: 'auto',
+            },
+          }}
+      >
+        <h2 className="text-2xl font-bold mb-4">Nouveau Projet</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+            <div>
+              <label htmlFor="projectName" className="block text-sm font-medium leading-6 text-gray-900">
+                Titre du projet
+              </label>
+              <div className="mt-2">
+                <input
+                    type="text"
+                    name="projectName"
+                    id="projectName"
+                    autoComplete="off"
+                    className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={handleProjectNameChange}
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="projectDescription" className="block text-sm font-medium leading-6 text-gray-900">
+                Description
+              </label>
+              <div className="mt-2">
+              <textarea
+                  name="projectDescription"
+                  id="projectDescription"
+                  className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  onChange={handleProjectDescriptionChange}
+              />
+              </div>
+            </div>
+          </div>
+          <button type="submit" className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Créer le projet
+          </button>
+          {successMessage && (
+              <p className="mt-2 text-green-600">{successMessage}</p>
+          )}
+        </form>
+      </Modal>
   );
-};
+}
 
-export default ProjectCreationPage;
+export default ProjectCreate;
