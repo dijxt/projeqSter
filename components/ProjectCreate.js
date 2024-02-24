@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
-import {useRouter} from "next/navigation";
 
 const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
   const [projectName, setProjectName] = useState('');
@@ -32,7 +31,6 @@ const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
       description: projectDescription
     };
 
-    const router = useRouter();
 
     try {
       const response = await axios.post(process.env.NEXT_PUBLIC_API_HOST + '/api/projet/creer', projectData);
@@ -42,7 +40,7 @@ const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
         setSuccessMessage('Projet créé avec succès !');
         // Fermer le modal après un délai
         setTimeout(() => {
-          router.refresh();
+          location.reload();
           closeModal();
 
         }, 3000);

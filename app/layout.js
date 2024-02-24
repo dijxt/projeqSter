@@ -8,7 +8,7 @@ dotenv.config();
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "ProjeqTor",
+  title: "ProjeqSter",
   description: "Application de gestion de projet",
 };
 

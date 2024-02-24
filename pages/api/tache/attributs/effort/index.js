@@ -10,16 +10,14 @@ const connection = mysql.createConnection({
     database: process.env.DB_NAME
 });
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
     if (req.method === 'GET') {
-        const { id_projet } = req.query;
-
-        connection.query('SELECT * FROM TACHE WHERE id_projet = ?', [id_projet], (error, results) => {
+        connection.query('SELECT * FROM EFFORT', (error, results) => {
             if (error) {
                 console.log(error);
                 res.status(500).json({ status: 'error', error });
             } else {
-                res.status(200).json({ status: 'ok', tasks: results });
+                res.status(200).json(results);
             }
         });
     } else {

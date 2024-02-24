@@ -1,16 +1,21 @@
+// projects/[id].js
 'use client';
 import React, { useEffect, useState } from 'react';
 import fetchProject from "@/lib/fetchProject";
 import dotenv from "dotenv";
 import { notFound } from "next/navigation";
 import TaskColumn from "@/components/TaskColumn";
+import fetchTasks from "@/lib/fetchTasks";
+import TaskCreate from "@/components/TaskCreate";
+import ProjectAffect from "@/components/ProjectAffect";
+
 
 dotenv.config();
-
-
-
 export default function ProjectPage({ params: { id }}) {
     const [project, setProject] = useState(null);
+    const [todo, setTodo] = useState([]);
+    const [inProgress, setInProgress] = useState([]);
+    const [done, setDone] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,13 +25,49 @@ export default function ProjectPage({ params: { id }}) {
             setProject(found);
 
             // fetch tasks
-            const todo = [];
-            const inProgress = [];
-            const done = [];
+            const tasks = await fetchTasks(id);
+
+
+            setTodo([]);
+            setInProgress([]);
+            setDone([]);
+            tasks.forEach(task => {
+                if (task.etat === 1) {
+                    setTodo(prevTodo => [...prevTodo, task]);
+                } else if (task.etat === 2) {
+                    setInProgress(prevInProgress => [...prevInProgress, task]);
+                } else {
+                    setDone(prevDone => [...prevDone, task]);
+                }
+            });
         };
 
         fetchData();
     }, [id]);
+
+
+    const [modalIsOpenCreateTask, setIsOpenCreateTask] = useState(false);
+
+    function openModalCreateTask() {
+        setIsOpenCreateTask(true);
+    }
+
+    function closeModalCreateTask() {
+        setIsOpenCreateTask(false);
+    }
+
+    const [modalIsOpenProjectAffect, setIsOpenProjectAffect] = useState(false);
+
+    function openModalProjectAffect() {
+
+        setIsOpenProjectAffect(true);
+    }
+
+    function closeModalProjectAffect() {
+
+        setIsOpenProjectAffect(false);
+    }
+
 
     if (!project) {
         return <div>Loading...</div>;
@@ -36,10 +77,42 @@ export default function ProjectPage({ params: { id }}) {
         <div>
             <h1>{project.nom_projet}</h1>
             <p>{project.description}</p>
-            <div className="task-board">
-                <TaskColumn status="À faire" tasks={project.tasks} />
-                <TaskColumn status="En cours" tasks={project.tasks} />
-                <TaskColumn status="Terminé" tasks={project.tasks} />
+
+            <button
+                className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center mx-auto block transform transition duration-500 ease-in-out hover:scale-105"
+                onClick={openModalCreateTask}
+            >
+                Nouvelle tâche
+            </button>
+            <TaskCreate
+                modalIsOpen={modalIsOpenCreateTask}
+                openModal={openModalCreateTask}
+                closeModal={closeModalCreateTask}
+                projectId={id}
+            />
+
+            <button
+                className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center mx-auto block transform transition duration-500 ease-in-out hover:scale-105"
+                onClick={openModalProjectAffect}
+            >
+                Affecter un salarié à ce projet
+            </button>
+            <ProjectAffect
+                modalIsOpen={modalIsOpenProjectAffect}
+                openModal={openModalProjectAffect}
+                closeModal={closeModalProjectAffect}
+                projectId={id}
+            />
+
+
+
+            <div
+                className="task-board flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mx-auto">
+                <TaskColumn status="À faire" tasks={todo}
+                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md"/>
+                <TaskColumn status="En cours" tasks={inProgress}
+                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md"/>
+                <TaskColumn status="Terminé" tasks={done} className="p-4 shadow-md"/>
             </div>
         </div>
     )

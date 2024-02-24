@@ -25,7 +25,7 @@ export default async function handler(req, res) {
             httpOnly: true,
             secure: false,
             sameSite: 'strict',
-            maxAge: 3600, // 1 heure
+            maxAge: 3600*10, // 10 heure
             path: '/',
           });
           res.setHeader('Set-Cookie', cookie);

@@ -28,7 +28,7 @@ export default function UserForm({type, link, router}) {
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img src="/assets/favicon.png" className="h-24 mx-auto" alt="Logo" />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              ProjeqTor : {type}
+              ProjeqSter : {type}
             </h2>
           </div>
 

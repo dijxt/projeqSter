@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { id_projet, titre, description, type_tache, effort } = req.body;
+    const { id_projet, titre, description, type_tache, effort, etat } = req.body;
 
     const cookies = parse(req.headers.cookie || '');
     const id_salarie = cookies.id_salarie;
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         res.status(500).json({ status: 'error', error });
       } else {
         if (results.length > 0) {
-          connection.query('INSERT INTO TACHE (id_projet, titre, description, type_tache, effort, etat) VALUES (?, ?, ?, ?, ?, 1)', [id_projet, titre, description, type_tache, effort], (error, results) => {
+          connection.query('INSERT INTO TACHE (id_projet, titre, description, type_tache, effort, etat) VALUES (?, ?, ?, ?, ?, ?)', [id_projet, titre, description, type_tache, effort, etat], (error, results) => {
             if (error) {
               console.log(error);
               res.status(500).json({ status: 'error', error });
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
               res.status(500).json({ status: 'error', error });
             } else {
               if (results.length > 0) {
-                connection.query('INSERT INTO TACHE (id_projet, titre, description, type_tache, effort, etat) VALUES (?, ?, ?, ?, ?, 1)', [id_projet, titre, description, type_tache, effort], (error, results) => {
+                connection.query('INSERT INTO TACHE (id_projet, titre, description, type_tache, effort, etat) VALUES (?, ?, ?, ?, ?, ?)', [id_projet, titre, description, type_tache, effort, etat], (error, results) => {
                   if (error) {
                     console.log(error);
                     res.status(500).json({ status: 'error', error });
