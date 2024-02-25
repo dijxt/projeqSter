@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import fetchProjects from "@/lib/fetchProjects";
 import {useEffect, useState} from "react";
 import fetchUsers from "@/lib/fetchUsers";
-import Modal from "react-modal";
 import ProjectCreate from "@/components/ProjectCreate";
 
 dotenv.config();

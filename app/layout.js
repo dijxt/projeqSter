@@ -15,6 +15,7 @@ export const metadata = {
 const host = process.env.API_HOST;
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
       <body className={inter.className}>

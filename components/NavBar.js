@@ -1,7 +1,20 @@
-import React from 'react';
+'use client';
+import { useState, useEffect } from "react";
+import { usePathname } from 'next/navigation';
+import axios from "axios";
 
-const Navbar = ({host}) => {
+export default function Navbar({ host }) {
+    const pathname = usePathname();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    useEffect(() => {
+      const fetchData = async () => {
+        const response = await axios.get(host + "/api/compte/profil");
+        setIsLoggedIn(response.data !== 0);
+      };
+  
+      fetchData();
+    }, [pathname]);
     return (
         <nav className="bg-gray-800 p-4">
             <div className="container mx-auto flex flex-wrap items-center justify-between">
@@ -15,22 +28,29 @@ const Navbar = ({host}) => {
                 </div>
                 <div className="hidden lg:block">
                     <ul className="flex space-x-4">
-                        <li>
-                            <a href={host + "/account/login"} className="text-white hover:text-gray-300">Se connecter</a>
-                        </li>
-                        <li>
-                            <a href={host + "/account/signin"} className="text-white hover:text-gray-300">S'inscrire</a>
-                        </li>
-                        <li>
-                            <a href={host + "/projects"} className="text-white hover:text-gray-300">Mes projets</a>
-                        </li>
-                        <li>
-                            <a href={host + "/projects/new"} className="text-white hover:text-gray-300">Nouveau projet</a>
-                        </li>
-
-                        <li>
-                            <a href={host + "/account/profile"} className="text-white hover:text-gray-300">Mon profil</a>
-                        </li>
+                        {!isLoggedIn && (
+                            <>
+                                <li>
+                                    <a href={host + "/account/login"} className="text-white hover:text-gray-300">Se connecter</a>
+                                </li>
+                                <li>
+                                    <a href={host + "/account/signin"} className="text-white hover:text-gray-300">S'inscrire</a>
+                                </li>
+                            </>
+                        )}
+                        {isLoggedIn && (
+                            <>
+                                <li>
+                                    <a href={host + "/projects"} className="text-white hover:text-gray-300">Mes projets</a>
+                                </li>
+                                <li>
+                                    <a href={host + "/account/profile"} className="text-white hover:text-gray-300">Mon profil</a>
+                                </li>
+                                <li>
+                                    <a href={host + "/account/logout"} className="text-white hover:text-gray-300">Se déconnecter</a>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>
@@ -38,4 +58,3 @@ const Navbar = ({host}) => {
     );
 }
 
-export default Navbar;

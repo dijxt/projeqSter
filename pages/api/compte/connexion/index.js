@@ -1,15 +1,5 @@
-import mysql from 'mysql';
-import dotenv from 'dotenv';
 import { serialize } from 'cookie';
-
-dotenv.config();
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME
-});
+import connection from '@/lib/database';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {

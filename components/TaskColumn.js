@@ -66,11 +66,10 @@ export default function TaskColumn({ status, tasks }) {
                                             {(provided, snapshot) => (
                                                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                     <div className="task mb-4 p-4 border rounded shadow">
-                                                        <h3 className="text-xl font-semibold">{task.titre}</h3>
-                                                        <p className="text-sm mb-2">{task.description}</p>
-                                                        <p className="text-xs text-gray-500">{(taskStates.find(state => state.id_etat === task.etat) || {}).libelle_etat}</p>
-                                                        <p className="text-xs text-gray-500">{(taskEfforts.find(effort => effort.id_effort === task.effort) || {}).libelle_effort}</p>
-                                                        <p className="text-xs text-gray-500">{(taskTypes.find(type => type.id_type_tache === task.type_tache) || {}).libelle_type_tache}</p>
+                                                        <h3 className="text-xl font-semibold">Titre : {task.titre}</h3>
+                                                        <p className="text-sm mb-2">Description : {task.description}</p>
+                                                        <p className="text-xs text-gray-500">Effort de la tâche : {(taskEfforts.find(effort => effort.id_effort === task.effort) || {}).libelle_effort}</p>
+                                                        <p className="text-xs text-gray-500">Type de tâche : {(taskTypes.find(type => type.id_type_tache === task.type_tache) || {}).libelle_type_tache}</p>
                                                     </div>
                                                 </div>
                                             )}

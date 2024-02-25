@@ -75,11 +75,26 @@ export default function ProjectPage({ params: { id }}) {
 
     return (
         <div>
-            <h1>{project.nom_projet}</h1>
-            <p>{project.description}</p>
+            <h1 className="mb-5 text-3xl font-bold text-center">{project.nom_projet}</h1>
+            <p style={{ marginBottom: '100px' }} className="text-2xl text-center">{project.description}</p>
+
+
+
+            
+
+
+
+            <div
+                className="task-board flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mx-auto mb-10">
+                <TaskColumn status="À faire" tasks={todo}
+                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md"/>
+                <TaskColumn status="En cours" tasks={inProgress}
+                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md"/>
+                <TaskColumn status="Terminé" tasks={done} className="p-4 shadow-md"/>
+            </div>
 
             <button
-                className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center mx-auto block transform transition duration-500 ease-in-out hover:scale-105"
+                className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center mx-auto block transform transition duration-500 ease-in-out hover:scale-105 mb-7"
                 onClick={openModalCreateTask}
             >
                 Nouvelle tâche
@@ -103,17 +118,6 @@ export default function ProjectPage({ params: { id }}) {
                 closeModal={closeModalProjectAffect}
                 projectId={id}
             />
-
-
-
-            <div
-                className="task-board flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mx-auto">
-                <TaskColumn status="À faire" tasks={todo}
-                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md"/>
-                <TaskColumn status="En cours" tasks={inProgress}
-                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md"/>
-                <TaskColumn status="Terminé" tasks={done} className="p-4 shadow-md"/>
-            </div>
         </div>
     )
 }
