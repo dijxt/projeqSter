@@ -12,6 +12,7 @@ export default function ProjectAffect({ modalIsOpen, openModal, closeModal, proj
     const [selectedUserId, setSelectedUserId] = useState('');
     const [selectedRightId, setSelectedRightId] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchProjectAffectData = async () => {
@@ -47,7 +48,6 @@ export default function ProjectAffect({ modalIsOpen, openModal, closeModal, proj
             droit: selectedRightId
         };
 
-        // Vérifier que l'utilisateur et les droits sont sélectionnés
         if (!selectedUserId || !selectedRightId) {
             alert("Veuillez sélectionner un utilisateur et des droits.");
             return;
@@ -57,18 +57,17 @@ export default function ProjectAffect({ modalIsOpen, openModal, closeModal, proj
             const response = await axios.post(process.env.NEXT_PUBLIC_API_HOST + '/api/projet/affecter', affectationData);
 
             if (response.data.status === 'ok') {
-                // Afficher un message de succès
                 setSuccessMessage('Utilisateur affecté au projet avec succès !');
-                // Fermer le modal après un délai
-                setTimeout(() => {
-                    location.reload();
-                    closeModal();
-                }, 3000);
             } else {
-                console.error('Erreur lors de l\'affectation de l\'utilisateur au projet:', response.data.message);
+                setErrorMessage('Erreur lors de l\'affectation');
             }
         } catch (error) {
-            console.error('Erreur lors de la requête:', error);
+            setErrorMessage('Erreur lors de l\'affectation');
+        } finally {
+            setTimeout(() => {
+                location.reload();
+                closeModal();
+            }, 2000);
         }
     };
 
@@ -130,6 +129,9 @@ export default function ProjectAffect({ modalIsOpen, openModal, closeModal, proj
                 </button>
                 {successMessage && (
                     <p className="mt-2 text-green-600">{successMessage}</p>
+                )}
+                {errorMessage && (
+                    <p className="mt-2 text-red-600">{errorMessage}</p>
                 )}
             </form>
         </Modal>

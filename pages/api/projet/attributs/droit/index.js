@@ -1,4 +1,5 @@
-import connection from '@/lib/database';
+import { connection } from '@/lib/database';
+
 
 export default function handler(req, res) {
     if (req.method === 'GET') {

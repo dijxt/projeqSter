@@ -1,5 +1,6 @@
 import { serialize } from 'cookie';
-import connection from '@/lib/database';
+import { connection } from '@/lib/database';
+
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {

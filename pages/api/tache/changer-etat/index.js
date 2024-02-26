@@ -1,4 +1,4 @@
-import connection from '@/lib/database';
+import { connection } from '@/lib/database';
 import { parse } from 'cookie';
 
 export default async function handler(req, res) {
