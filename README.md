@@ -1,4 +1,4 @@
-# ProjeqSter
+# [ProjeqSter](https://projeq-ster.vercel.app)
 
 Application web de gestion de projets et de tâches, pour une PME, développée avec React et Next.js.
 Nous pouvons créer un utilisateur et se connecter avec ses identifiants. L'utilisateur peut créer un projet, ajouter des tâches à ce projet, et affecter des salariés à ces projets. Les salariés peuvent se connecter et voir les projets qui leur sont affectées.
