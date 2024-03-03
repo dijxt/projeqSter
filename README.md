@@ -24,7 +24,7 @@ ou téléchargez le zip [ici](https://github.com/dijxt/projeqSter/archive/refs/h
 Si vous n'avez pas installé Node.js, vous pouvez le faire [ici](https://nodejs.org/en/download/). Veuillez installer la version LTS la plus récente.
 
 ```bash
-cd projet-react-front
+cd projeqSter
 npm install
 ```
 
