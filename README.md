@@ -14,10 +14,10 @@ Nous pouvons créer un utilisateur et se connecter avec ses identifiants. L'util
 1. Clonez le dépôt :
 
 ```bash
-git clone https://github.com/dijxt/projet-react-front.git
+git clone https://github.com/dijxt/projeqSter.git
 ```
 
-ou téléchargez le zip [ici](https://github.com/dijxt/projet-react-front/archive/refs/heads/main.zip) et décompressez-le.
+ou téléchargez le zip [ici](https://github.com/dijxt/projeqSter/archive/refs/heads/main.zip) et décompressez-le.
 
 2. Installez les dépendances du projet :
 
