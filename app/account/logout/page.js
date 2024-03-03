@@ -7,7 +7,6 @@ export default function Logout() {
     const router = useRouter();
 
     useEffect(() => {
-      // Appel à votre API pour déconnecter l'utilisateur
       const logoutUser = async () => {
         await axios.post('/api/compte/deconnexion');
         router.push('/account/login'); 

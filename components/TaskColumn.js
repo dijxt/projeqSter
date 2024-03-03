@@ -5,6 +5,8 @@ import fetchTaskEfforts from "@/lib/fetchTaskEfforts";
 import fetchTaskTypes from "@/lib/fetchTaskTypes";
 import TaskEdit from "@/components/TaskEdit";
 import axios from "axios";
+import {FaPencilAlt} from "react-icons/fa";
+import {FaTrash} from "react-icons/fa";
 
 export default function TaskColumn({ status, tasks, rights }) {
     const [taskStates, setTaskStates] = useState([]);
@@ -59,18 +61,14 @@ export default function TaskColumn({ status, tasks, rights }) {
                             <div className="flex justify-end items-center">
                                 {(rights === 3 || rights === 2) && (
                                     <div className="flex space-x-2">
-                                        <button onClick={() => openModalEditTask(task)} className="text-blue-500 hover:text-blue-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                                            </svg>
+                                        <button onClick={() => openModalEditTask(task)} className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded transition duration-300 ease-in-out transform hover:scale-105">
+                                            <FaPencilAlt className="w-4 h-4"/>
                                         </button>
-                                        <button onClick={() => handleDeleteTask(task.id_tache)} className="text-red-500 hover:text-red-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3-3m0 0l3 3m-3-3v14a2 2 0 002 2h8a2 2 0 002-2V6m-2 0H5m14 0a2 2 0 11-4 0 2 2 0 014 0z" />
-                                            </svg>
+                                        <button onClick={() => handleDeleteTask(task.id_tache)} className="flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded transition duration-300 ease-in-out transform hover:scale-105">
+                                            <FaTrash className="w-4 h-4"/>
                                         </button>
                                     </div>
+
                                 )}
                             </div>
 

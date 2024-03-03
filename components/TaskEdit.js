@@ -9,6 +9,7 @@ export default function TaskEdit({ modalIsOpen, closeModal, task }) {
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const [taskType, setTaskType] = useState('');
     const [taskState, setTaskState] = useState('');
     const [taskEffort, setTaskEffort] = useState('');
@@ -61,7 +62,7 @@ export default function TaskEdit({ modalIsOpen, closeModal, task }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Vérifier que le titre et la description ne sont pas vides
+
         if (!taskTitle || !taskDescription) {
             alert("Le titre et la description ne peuvent pas être vides.");
             return;
@@ -80,21 +81,23 @@ export default function TaskEdit({ modalIsOpen, closeModal, task }) {
             const response = await axios.put(process.env.NEXT_PUBLIC_API_HOST + '/api/tache/modifier', taskData);
 
             if (response.data.status === 'ok') {
-                // Afficher un message de succès
+
                 setSuccessMessage('Tâche modifiée avec succès !');
-                // Fermer le modal après un délai
-                setTimeout(() => {
-                    location.reload();
-                    closeModal();
-                }, 3000);
+
             } else {
-                console.error('Erreur lors de la modification de la tâche:', response.data.message);
+                setErrorMessage('Erreur lors de la modification de la tâche');
             }
         } catch (error) {
-            console.error('Erreur lors de la requête:', error);
+            setErrorMessage('Erreur lors de la modification de la tâche');
+        }
+        finally {
+            setTimeout(() => {
+                location.reload();
+                closeModal();
+            }, 2000);
+
         }
     };
-
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -103,12 +106,13 @@ export default function TaskEdit({ modalIsOpen, closeModal, task }) {
             style={{
                 content: {
                     width: '50%',
-                    height: '50%',
+                    height: '60%',
                     margin: 'auto',
                 },
             }}
         >
-            <h2 className="text-2xl font-bold mb-4">Modifier la Tâche</h2>
+
+            <h2 className="text-2xl font-bold mb-4">Modifier la tâche : {taskTitle}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
                     <div>
@@ -205,6 +209,9 @@ export default function TaskEdit({ modalIsOpen, closeModal, task }) {
                 </button>
                 {successMessage && (
                     <p className="mt-2 text-green-600">{successMessage}</p>
+                )}
+                {errorMessage && (
+                    <p className="mt-2 text-red-600">{errorMessage}</p>
                 )}
             </form>
         </Modal>

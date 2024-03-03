@@ -38,7 +38,7 @@ export default function ProjectList() {
         <div className="Fond min-h-screen bg-cover bg-center flex flex-col items-center justify-center" style={{ 
             backgroundImage: "url('/assets/fond_ecran2.jpg')",
         }}>
-            <div className="p-2 bg-gray-100 min-h-screen bg-opacity-75">
+            <div className="p-2 bg-gray-100 min-h-screen bg-opacity-90">
                 <h1 className="text-4xl font-bold text-center mt-5 mb-3">Les projets</h1>
                 {projectsData.length > 0 ? (
                     <div className="py-2 sm:py-10">

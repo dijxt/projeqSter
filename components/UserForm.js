@@ -1,7 +1,6 @@
 'use client';
 
 export default function UserForm({type, link, router}) {
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 

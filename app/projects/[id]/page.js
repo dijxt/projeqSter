@@ -8,6 +8,8 @@ import TaskColumn from "@/components/TaskColumn";
 import fetchTasks from "@/lib/fetchTasks";
 import TaskCreate from "@/components/TaskCreate";
 import ProjectAffect from "@/components/ProjectAffect";
+import ProjectEdit from "@/components/ProjectEdit";
+import { FaPencilAlt } from "react-icons/fa";
 
 dotenv.config();
 export default function ProjectPage({ params: { id }}) {
@@ -50,6 +52,16 @@ export default function ProjectPage({ params: { id }}) {
     }, [id]);
 
 
+    const [modalIsOpenEditProject, setIsOpenEditProject] = useState(false);
+
+    function openModalEditProject() {
+        setIsOpenEditProject(true);
+    }
+
+    function closeModalEditProject() {
+        setIsOpenEditProject(false);
+    }
+
     const [modalIsOpenCreateTask, setIsOpenCreateTask] = useState(false);
 
     function openModalCreateTask() {
@@ -78,28 +90,55 @@ export default function ProjectPage({ params: { id }}) {
 
     return (
 
-        <div className="Fond min-h-screen bg-cover bg-center flex flex-col items-center justify-center" style={{ 
-            backgroundImage: "url('/assets/fond_ecran.jpg')",
-        }}>
-        
-            <div className="text-center mb-10 bg-white bg-opacity-75 p-6 rounded-lg">
-                <h1 className="text-3xl font-bold uppercase text-center text-gray-900 mb-4">{project.nom_projet}</h1>
+        <div className="Fond min-h-screen bg-cover bg-center flex flex-col items-center justify-center" style={{backgroundImage: "url('/assets/fond_ecran.jpg')" }}>
+            {myRights === 3 && (
+                <div className="text-white bg-blue-700 px-4 py-2 mb-4 rounded-md">
+                    Vous êtes chef de projet sur ce projet.
+                </div>
+            )}
+            {myRights === 2 && (
+                <div className="text-white bg-green-700 px-4 py-2 mb-4 rounded-md">
+                    Vous avez des droits de lecture et écriture sur ce projet.
+                </div>
+            )}
+            {myRights === 1 && (
+                <div className="text-white bg-yellow-700 px-4 py-2 mb-4 rounded-md">
+                    Vous avez des droits seulement de lecture sur ce projet.
+                </div>
+            )}
+
+            <div
+                className="text-center mb-10 bg-white p-2 rounded-lg shadow-lg border border-gray-500 max-w-md mx-auto">
+                <h1 className="text-3xl font-bold uppercase text-gray-900 mb-4">{project.nom_projet}</h1>
                 <p className="text-lg text-gray-700">{project.description}</p>
+
+                <div className="flex justify-center mt-4">
+                    {(myRights === 3) && (
+                        <button onClick={() => openModalEditProject(project)}
+                                className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
+                            <FaPencilAlt className="w-4 h-4"/>
+                        </button>
+                    )}
+                </div>
             </div>
-        
-            <div className="task-board flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mx-auto mb-10">
-                <TaskColumn status="À faire" tasks={todo} rights={myRights} className="border-r border-gray-200 md:border-b-0 p-4 shadow-md bg-white"/>
-                <TaskColumn status="En cours" tasks={inProgress} rights={myRights} className="border-r border-gray-200 md:border-b-0 p-4 shadow-md bg-white"/>
-                <TaskColumn status="Terminé" tasks={done} rights={myRights} className="p-4 shadow-md bg-white"/>
+
+            <div
+                className="task-board flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mx-auto mb-10">
+                <TaskColumn status="À faire" tasks={todo} rights={myRights}
+                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md bg-white text-white"/>
+                <TaskColumn status="En cours" tasks={inProgress} rights={myRights}
+                            className="border-r border-gray-200 md:border-b-0 p-4 shadow-md bg-white text-white"/>
+                <TaskColumn status="Terminé" tasks={done} rights={myRights}
+                            className="p-4 shadow-md bg-white text-white"/>
             </div>
-        
+
             <div className="flex justify-center space-x-4">
                 {(myRights === 3 || myRights === 2) && (
                     <button
                         className="bg-gray bg-opacity-75 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center transform transition duration-500 ease-in-out hover:scale-105"
                         onClick={openModalCreateTask}
                     >
-                        Nouvelle tâche 
+                        Nouvelle tâche
                     </button>
                 )}
                 {myRights === 3 && (
@@ -111,14 +150,23 @@ export default function ProjectPage({ params: { id }}) {
                     </button>
                 )}
             </div>
-        
+
+
+            <ProjectEdit
+                modalIsOpen={modalIsOpenEditProject}
+                openModal={openModalEditProject}
+                closeModal={closeModalEditProject}
+                project={project}
+            />
+
+
             <TaskCreate
                 modalIsOpen={modalIsOpenCreateTask}
                 openModal={openModalCreateTask}
                 closeModal={closeModalCreateTask}
                 projectId={id}
             />
-        
+
             <ProjectAffect
                 modalIsOpen={modalIsOpenProjectAffect}
                 openModal={openModalProjectAffect}
@@ -126,7 +174,7 @@ export default function ProjectPage({ params: { id }}) {
                 projectId={id}
             />
         </div>
-        
-        
+
+
     )
 }

@@ -6,7 +6,7 @@ import axios from 'axios';
 import fetchUsers from '@/lib/fetchUsers';
 import fetchRights from '@/lib/fetchRights';
 
-export default function ProjectAffect({ modalIsOpen, openModal, closeModal, projectId }) {
+export default function ProjectAffect({ modalIsOpen, closeModal, projectId }) {
     const [users, setUsers] = useState([]);
     const [rights, setRights] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState('');

@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import { useRouter } from "next/navigation";
@@ -7,15 +7,16 @@ import fetchTaskStates from "@/lib/fetchTaskStates";
 import fetchTaskEfforts from "@/lib/fetchTaskEfforts";
 import fetchTaskTypes from "@/lib/fetchTaskTypes";
 
-export default function TaskCreate({ modalIsOpen, openModal, closeModal, projectId }) {
+export default function TaskCreate({ modalIsOpen, closeModal, projectId }) {
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const [taskType, setTaskType] = useState('');
     const [taskState, setTaskState] = useState('');
     const [taskEffort, setTaskEffort] = useState('');
 
-    // The task attributes lists
+
     const [taskStates, setTaskStates] = useState([]);
     const [taskEfforts, setTaskEfforts] = useState([]);
     const [taskTypes, setTaskTypes] = useState([]);
@@ -61,7 +62,7 @@ export default function TaskCreate({ modalIsOpen, openModal, closeModal, project
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Vérifier que le titre et la description ne sont pas vides
+
         if (!taskTitle || !taskDescription ) {
             alert("Le titre et la description ne peuvent pas être vides.");
             return;
@@ -82,18 +83,21 @@ export default function TaskCreate({ modalIsOpen, openModal, closeModal, project
             const response = await axios.post(process.env.NEXT_PUBLIC_API_HOST + '/api/tache/creer', taskData);
 
             if (response.data.status === 'ok') {
-                // Afficher un message de succès
+
                 setSuccessMessage('Tâche créée avec succès !');
-                // Fermer le modal après un délai
-                setTimeout(() => {
-                    location.reload();
-                    closeModal();
-                }, 3000);
+
             } else {
-                console.error('Erreur lors de la création de la tâche:', response.data.message);
+                setErrorMessage('Erreur lors de la création de la tâche');
             }
         } catch (error) {
-            console.error('Erreur lors de la requête:', error);
+            setErrorMessage('Erreur lors de la création de la tâche');
+        }
+        finally {
+            setTimeout(() => {
+                location.reload();
+                closeModal();
+            }, 2000);
+
         }
     };
 
@@ -105,7 +109,7 @@ export default function TaskCreate({ modalIsOpen, openModal, closeModal, project
             style={{
                 content: {
                     width: '50%',
-                    height: '50%',
+                    height: '60%',
                     margin: 'auto',
                 },
             }}
@@ -167,7 +171,7 @@ export default function TaskCreate({ modalIsOpen, openModal, closeModal, project
                             className="mt-2 block w-full py-1.5 pl-2 pr-8 border-0 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             onChange={handleTaskStateChange}
                         >
-                            {/* Options du menu déroulant pour l'état de la tâche */}
+
                             {taskStates.map(state => (
                                 <option key={state.id_etat} value={state.id_etat}>
                                     {state.libelle_etat}
@@ -185,7 +189,7 @@ export default function TaskCreate({ modalIsOpen, openModal, closeModal, project
                             className="mt-2 block w-full py-1.5 pl-2 pr-8 border-0 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             onChange={handleTaskEffortChange}
                         >
-                            {/* Options du menu déroulant pour l'effort de la tâche */}
+
                             {taskEfforts.map(effort => (
                                 <option key={effort.id_effort} value={effort.id_effort}>
                                     {effort.libelle_effort}
@@ -200,6 +204,9 @@ export default function TaskCreate({ modalIsOpen, openModal, closeModal, project
                 </button>
                 {successMessage && (
                     <p className="mt-2 text-green-600">{successMessage}</p>
+                )}
+                {errorMessage && (
+                    <p className="mt-2 text-red-600">{errorMessage}</p>
                 )}
             </form>
         </Modal>

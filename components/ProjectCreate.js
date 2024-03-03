@@ -1,13 +1,15 @@
 // ProjectCreate.js
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
+export default function ProjectCreate ({ modalIsOpen, closeModal })
+{
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleProjectNameChange = (e) => {
     setProjectName(e.target.value);
@@ -36,19 +38,21 @@ const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
       const response = await axios.post(process.env.NEXT_PUBLIC_API_HOST + '/api/projet/creer', projectData);
 
       if (response.data.status === 'ok') {
-        // Afficher un message de succès
-        setSuccessMessage('Projet créé avec succès !');
-        // Fermer le modal après un délai
-        setTimeout(() => {
-          location.reload();
-          closeModal();
 
-        }, 3000);
+        setSuccessMessage('Projet crée avec succès !');
+
       } else {
-        console.error('Erreur lors de la création du projet:', response.data.message);
+        setErrorMessage('Erreur lors de la création du projet');
       }
     } catch (error) {
-      console.error('Erreur lors de la requête:', error);
+      setErrorMessage('Erreur lors de la création du projet');
+    }
+    finally {
+      setTimeout(() => {
+        location.reload();
+        closeModal();
+      }, 2000);
+
     }
   };
 
@@ -103,9 +107,12 @@ const ProjectCreate = ({ modalIsOpen, openModal, closeModal }) => {
           {successMessage && (
               <p className="mt-2 text-green-600">{successMessage}</p>
           )}
+          {errorMessage && (
+              <p className="mt-2 text-red-600">{errorMessage}</p>
+          )}
         </form>
       </Modal>
   );
 }
 
-export default ProjectCreate;
+

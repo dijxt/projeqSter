@@ -1,4 +1,5 @@
-import connection from '@/lib/database';
+import {connection} from '@/lib/database';
+import { serialize } from 'cookie';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -9,6 +10,14 @@ export default async function handler(req, res) {
         console.log(error);
         res.status(500).json({ status: 'error', error });
       } else {
+        const cookie = serialize('id_salarie', String(results.insertId), {
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+          maxAge: 3600*10,
+          path: '/',
+        });
+        res.setHeader('Set-Cookie', cookie);
         res.status(200).json({ status: 'ok', results });
       }
     });
